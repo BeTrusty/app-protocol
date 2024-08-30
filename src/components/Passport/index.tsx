@@ -13,8 +13,8 @@ import {
   AccordionItem,
   Accordion
 } from '@nextui-org/react'
-import { LogoMercadoLibre } from '@components/Icons/LogoMercadoLibre'
-import { LogoGithub } from '@components/Icons/LogoGithub'
+import { LogoMercadoLibre } from '@components/icons/IconMercadoLibre'
+import { LogoGithub } from '@components/icons/IconGithub'
 import { timeSince } from '@/utils/timeSince'
 
 const DynamicInfo = ({
