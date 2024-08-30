@@ -17,7 +17,7 @@ import {
   LogoInstagram,
   LogoLinkedin,
   LogoMercadoLibre
-} from '@components/Icons'
+} from '@/components/Icons'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 
