@@ -9,15 +9,13 @@ import { Separator } from '@components/Separator'
 import { fetchUserById } from '@/utils/fetchUserById'
 import { Title } from '@components/Title'
 import { SelectDataProvider } from '@components/SelectDataProvider'
-// import {
-//   LogoAirbnb,
-//   LogoBCRA,
-//   LogoFacebook,
-//   LogoGithub,
-//   LogoInstagram,
-//   LogoLinkedin,
-//   LogoMercadoLibre
-// } from '@/components/Icons'
+import { LogoAirbnb } from '@/components/Icons/LogoAirbnb'
+import { LogoBCRA } from '@/components/Icons/LogoBCRA'
+import { LogoFacebook } from '@/components/Icons/LogoFacebook'
+import { LogoGithub } from '@/components/Icons/LogoGithub'
+import { LogoInstagram } from '@/components/Icons/LogoInstagram'
+import { LogoLinkedin } from '@/components/Icons/LogoLinkedin'
+import { LogoMercadoLibre } from '@/components/Icons/LogoMercadoLibre'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 
@@ -155,7 +153,7 @@ export function ConnectYourData ({
       <Title text='¡Conecta tu información!' />
       <div className='flex flex-col justify-start items-center gap-8 w-full'>
         <div className='flex flex-col justify-start items-center gap-2 w-full'>
-          {/* <Skeleton isLoaded={true} className='rounded-lg w-full'>
+          <Skeleton isLoaded={true} className='rounded-lg w-full'>
             {!user?.mercado_libre_nickname && (
               <SelectDataProvider
                 id='mercado-libre'
@@ -176,7 +174,7 @@ export function ConnectYourData ({
                 isAvailable={true}
               />
             )}
-          </Skeleton> */}
+          </Skeleton>
         </div>
 
         {user && (
@@ -206,7 +204,7 @@ export function ConnectYourData ({
         <Separator text='Próximamente...' />
 
         <div className='flex flex-col justify-start items-center gap-2 w-full'>
-          {/* <SelectDataProvider
+          <SelectDataProvider
             id='bcra'
             text='Banco Central de la República Argentina'
             icon={<LogoBCRA width='35px' />}
@@ -240,7 +238,7 @@ export function ConnectYourData ({
             icon={<LogoAirbnb width='40px' />}
             onClick={() => null}
             isAvailable={false}
-          /> */}
+          />
         </div>
       </div>
     </section>
