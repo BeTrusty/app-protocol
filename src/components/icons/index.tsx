@@ -1,5 +1,5 @@
 import { IconWelcome } from './IconWelcome'
-import { IconFingerprint } from './IconFingerPrint'
+import { IconFingerprint } from './IconFingerprint'
 import { IconGetData } from './IconGetData'
 import { IconPassport } from './IconPassport'
 import { LogoMercadoLibre } from './IconMercadoLibre'

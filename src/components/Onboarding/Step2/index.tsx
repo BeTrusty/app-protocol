@@ -1,4 +1,4 @@
-import { IconFingerprint } from '@components/icons/IconFingerPrint'
+import { IconFingerprint } from '@/components/icons/IconFingerprint'
 import { Title } from '@components/Title'
 
 export function Step2 (): JSX.Element {
