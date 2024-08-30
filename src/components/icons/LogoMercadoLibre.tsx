@@ -1,4 +1,4 @@
-import { type propsLogo } from '@/types/icon'
+import { propsLogo } from '@/types/icon'
 
 export function LogoMercadoLibre ({ width, css }: propsLogo): JSX.Element {
   return (
