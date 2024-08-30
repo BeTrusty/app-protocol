@@ -8,7 +8,7 @@ import { Title } from '@/components/Title'
 import { Button, Skeleton } from '@nextui-org/react'
 import { CountDown } from '@/components/CountDown'
 import { FaArrowLeft } from 'react-icons/fa'
-import { LogoQuarkID } from '@/components/Icons/LogoQuarkId'
+import { LogoQuarkID } from '@/components/icons/IconQuarkId'
 
 export default function QuarkIDPage (): JSX.Element {
   const router = useRouter()
