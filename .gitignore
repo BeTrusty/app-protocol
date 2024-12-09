@@ -4,10 +4,13 @@
 /node_modules
 /.pnp
 .pnp.js
-.yarn/install-state.gz
 
 # testing
 /coverage
+
+# database
+/prisma/db.sqlite
+/prisma/db.sqlite-journal
 
 # next.js
 /.next/
@@ -24,13 +27,38 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # local env files
+.env
 .env*.local
+.env.staging
+.env.production
+.env.preview
+.env.development
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# Firebase
+/.firebaserc
+/firebase.json
+/firestore.indexes.json
+/firestore.rules
+/remoteconfig.template.json
+/FIREBASE.md
+/CHALLENGE.md
+/storage.rules
+/cors.json
+
+# Sentry Config File
+.sentryclirc
+
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lockb
