@@ -28,7 +28,7 @@ export function initAuth (): void {
     throw new Error('FIREBASE_PRIVATE_KEY is not defined')
   }
   init({
-    authPageURL: '/signup',
+    authPageURL: '/login',
     appPageURL: ({ ctx }) => {
       const isServerSide = typeof window === 'undefined'
       const origin = isServerSide
