@@ -9,14 +9,14 @@ import { Separator } from '@components/Separator'
 import { fetchUserById } from '@/utils/fetchUserById'
 import { Title } from '@components/Title'
 import { SelectDataProvider } from '@components/SelectDataProvider'
-import { LogoAirbnb } from '@/components/icons/IconAirbnb'
-import { LogoBCRA } from '@/components/icons/IconBCRA'
-import { LogoFacebook } from '@/components/icons/IconFacebook'
-import { LogoGithub } from '@/components/icons/IconGithub'
-import { LogoInstagram } from '@/components/icons/IconInstagram'
-import { LogoLinkedin } from '@/components/icons/IconLinkedin'
-import { LogoMercadoLibre } from '@/components/icons/IconMercadoLibre'
-import { LogoTalentProtocol } from '@/components/icons/IconTalentProtocol'
+import { LogoAirbnb } from '@/components/Icons/IconAirbnb'
+import { LogoBCRA } from '@/components/Icons/IconBCRA'
+import { LogoFacebook } from '@/components/Icons/IconFacebook'
+import { LogoGithub } from '@/components/Icons/IconGithub'
+import { LogoInstagram } from '@/components/Icons/IconInstagram'
+import { LogoLinkedin } from '@/components/Icons/IconLinkedin'
+import { LogoMercadoLibre } from '@/components/Icons/IconMercadoLibre'
+import { LogoTalentProtocol } from '@/components/Icons/IconTalentProtocol'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 
@@ -51,6 +51,8 @@ export function ConnectYourData ({
 
   const urlLoginGithub: string = `https://api-betrusty.vercel.app/github/login`
   const urlLoginMl: string = `https://api-betrusty.vercel.app/ml/login`
+
+  //Nueva url hay que crearla
   const urlLoginTalentProtocol: string = `https://api-betrusty.vercel.app/talentprotocol/login`
 
 
@@ -95,23 +97,18 @@ export function ConnectYourData ({
         const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
           method: 'GET',
           headers: {
-          'X-API-KEY':	'<tu_clave_API>',
+          'X-API-KEY':	'521a7face5859649c3639f01a52961bc2cb35773a01cb498750018ba5ee7',
           },
         });
         const data = await response.json();
-        // Verifica que la respuesta contiene el campo `passport` y `id`
-        if (data && data.passport && data.passport.id) {
-          return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR&passport_id=${data.passport.id}`;
-        } else {
-          console.error('La respuesta de la API no contiene el campo esperado `passport.id`');
-          return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR`;
-        }
+        console.log(data);
+        //Validacion necesaria
       } catch (error) {
         console.error('Error al llamar a la API de Talent Protocol:', error);
-        return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR`;
+        //return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR`;
       }
     } else {
-      return `${urlLoginTalentProtocol}`;
+      //return `${urlLoginTalentProtocol}`;
     }
   }
 
@@ -121,8 +118,11 @@ export function ConnectYourData ({
    * @returns {void}
    */
   const loginTalentProtocol = async () => {
+    id = '0xC38555a1Afcd8394532Caa11D0be60Df166eC188' //Test ID
     const url = await getUrlTalentProtocol();
-    router.push(url);
+    console.log(url);
+    //router.push(url);
+   
   }
 
 
