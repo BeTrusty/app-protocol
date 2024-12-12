@@ -97,7 +97,7 @@ export function ConnectYourData ({
   }
 
 
-  const getUrlTalentProtocol = async () => {
+  const getUrlTalentProtocol = async (id: string) => {
 
     if (id !== '') { // Asegúrate de que `id` esté disponible
       try {
@@ -127,8 +127,8 @@ export function ConnectYourData ({
    * @returns {void}
    */
   const loginTalentProtocol = async () => {
-    id = '0xC38555a1Afcd8394532Caa11D0be60Df166eC188' //Test ID
-    const url = await getUrlTalentProtocol();
+    const id = '0xC38555a1Afcd8394532Caa11D0be60Df166eC188' //Test ID
+    const url = await getUrlTalentProtocol(id);
     console.log(url);
     //router.push(url);
   }
