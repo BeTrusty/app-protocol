@@ -19,6 +19,7 @@ import { LogoMercadoLibre } from '@/components/Icons/IconMercadoLibre'
 import { LogoTalentProtocol } from '@/components/Icons/IconTalentProtocol'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useConnectInformation } from '@/hooks/useConnectInformation'
 
 export function ConnectYourData ({
   email,
@@ -27,26 +28,30 @@ export function ConnectYourData ({
   email: string
   id: string
 }): JSX.Element {
-  const [localId, setLocalId] = useLocalStorage<string>('localId')
-  const [level, setLevel] = useLocalStorage<string>('level')
-  const [didUrl, setDidUrl] = useLocalStorage<string>('didUrl')
-  const [time, setTime] = useLocalStorage<number>('time')
-  const [credential, setCredential] =
-    useLocalStorage<CredentialData>('credential')
-  const [data, setData] = useState<ResponseVCData | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [isLoading, setIsLoading] = useState<{
-    github: boolean
-    mercadoLibre: boolean
-    talentprotocol: boolean
-  }>({
-    github: true,
-    mercadoLibre: true,
-    talentprotocol: true
-  })
-  const [error, setError] = useState<string | null>(null)
-  const [user, setUser] = useState<CredentialSubject | null>(null)
-
+  const { localId, 
+    setLocalId,
+    level, 
+    setLevel,
+    didUrl, 
+    setDidUrl,
+    time, 
+    setTime,
+    redes,
+    setRedes,
+    talentProtocol, 
+    setTalentProtocol,
+    credential, 
+    setCredential,
+    data, 
+    setData,
+    loading, 
+    setLoading,
+    isLoading, 
+    setIsLoading,
+    error, 
+    setError,
+    user, 
+    setUser} = useConnectInformation()
   const router = useRouter()
 
   const urlLoginGithub: string = `https://api-betrusty.vercel.app/github/login`
@@ -91,7 +96,9 @@ export function ConnectYourData ({
     router.push(getUrlMercadoLibre())
   }
 
+
   const getUrlTalentProtocol = async () => {
+
     if (id !== '') { // Asegúrate de que `id` esté disponible
       try {
         const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
@@ -101,7 +108,9 @@ export function ConnectYourData ({
           },
         });
         const data = await response.json();
-        console.log(data);
+        setTalentProtocol(data)
+    setRedes({...redes, talentProtocol: true})
+
         //Validacion necesaria
       } catch (error) {
         console.error('Error al llamar a la API de Talent Protocol:', error);
@@ -122,7 +131,6 @@ export function ConnectYourData ({
     const url = await getUrlTalentProtocol();
     console.log(url);
     //router.push(url);
-   
   }
 
 
@@ -142,6 +150,7 @@ export function ConnectYourData ({
     }
 
     getUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
   /**
@@ -198,7 +207,7 @@ export function ConnectYourData ({
       <div className='flex flex-col justify-start items-center gap-8 w-full'>
         <div className='flex flex-col justify-start items-center gap-2 w-full'>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.mercado_libre_nickname && (
+            {!user?.mercado_libre_nickname && !redes.mercadoLibre && (
               <SelectDataProvider
                 id='mercado-libre'
                 text='Mercado Libre'
@@ -209,7 +218,7 @@ export function ConnectYourData ({
             )}
           </Skeleton>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.github_login && (
+            {!user?.github_login && !redes.github &&  (
               <SelectDataProvider
                 id='github'
                 text='Github'
@@ -220,7 +229,7 @@ export function ConnectYourData ({
             )}
           </Skeleton>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.talent_protocol_login && (
+            {!user?.talent_protocol_login && !redes.talentProtocol &&  (
               <SelectDataProvider
                 id='talent-protocol'
                 text='Talent Protocol'
