@@ -16,6 +16,7 @@ import { LogoGithub } from '@/components/icons/IconGithub'
 import { LogoInstagram } from '@/components/icons/IconInstagram'
 import { LogoLinkedin } from '@/components/icons/IconLinkedin'
 import { LogoMercadoLibre } from '@/components/icons/IconMercadoLibre'
+import { LogoTalentProtocol } from '@/components/icons/IconTalentProtocol'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 
@@ -37,9 +38,11 @@ export function ConnectYourData ({
   const [isLoading, setIsLoading] = useState<{
     github: boolean
     mercadoLibre: boolean
+    talentprotocol: boolean
   }>({
     github: true,
-    mercadoLibre: true
+    mercadoLibre: true,
+    talentprotocol: true
   })
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<CredentialSubject | null>(null)
@@ -48,6 +51,8 @@ export function ConnectYourData ({
 
   const urlLoginGithub: string = `https://api-betrusty.vercel.app/github/login`
   const urlLoginMl: string = `https://api-betrusty.vercel.app/ml/login`
+  const urlLoginTalentProtocol: string = `https://api-betrusty.vercel.app/talentprotocol/login`
+
 
   const getUrlGithub = () => {
     if (email !== '') {
@@ -66,6 +71,7 @@ export function ConnectYourData ({
     router.push(getUrlGithub())
   }
 
+
   const getUrlMercadoLibre = () => {
     if (email !== '') {
       return `${urlLoginMl}?worldid_email=${email}&country_code=AR`
@@ -83,6 +89,43 @@ export function ConnectYourData ({
     router.push(getUrlMercadoLibre())
   }
 
+  const getUrlTalentProtocol = async () => {
+    if (id !== '') { // Asegúrate de que `id` esté disponible
+      try {
+        const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
+          method: 'GET',
+          headers: {
+          'X-API-KEY':	'<tu_clave_API>',
+          },
+        });
+        const data = await response.json();
+        // Verifica que la respuesta contiene el campo `passport` y `id`
+        if (data && data.passport && data.passport.id) {
+          return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR&passport_id=${data.passport.id}`;
+        } else {
+          console.error('La respuesta de la API no contiene el campo esperado `passport.id`');
+          return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR`;
+        }
+      } catch (error) {
+        console.error('Error al llamar a la API de Talent Protocol:', error);
+        return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR`;
+      }
+    } else {
+      return `${urlLoginTalentProtocol}`;
+    }
+  }
+
+  /**
+   * @function loginTalentProtocol
+   * @description Redirecciona al usuario a la página de login de talent protocol
+   * @returns {void}
+   */
+  const loginTalentProtocol = async () => {
+    const url = await getUrlTalentProtocol();
+    router.push(url);
+  }
+
+
   useEffect(() => {
     const getUser = async () => {
       if (id !== undefined && id !== null && id !== '') {
@@ -91,7 +134,8 @@ export function ConnectYourData ({
           setUser(user)
           setIsLoading({
             github: user.github_login ? true : false,
-            mercadoLibre: user.mercado_libre_nickname ? true : false
+            mercadoLibre: user.mercado_libre_nickname ? true : false,
+            talentprotocol: user.talent_protocol_login ? true : false
           })
         }
       }
@@ -171,6 +215,17 @@ export function ConnectYourData ({
                 text='Github'
                 icon={<LogoGithub width='35px' />}
                 onClick={loginGithub}
+                isAvailable={true}
+              />
+            )}
+          </Skeleton>
+          <Skeleton isLoaded={true} className='rounded-lg w-full'>
+            {!user?.talent_protocol_login && (
+              <SelectDataProvider
+                id='talent-protocol'
+                text='Talent Protocol'
+                icon={<LogoTalentProtocol width='35px' />}
+                onClick={loginTalentProtocol}
                 isAvailable={true}
               />
             )}

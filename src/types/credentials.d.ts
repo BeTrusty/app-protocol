@@ -28,6 +28,7 @@ export interface CredentialSubject {
   mercado_libre_buyer_reputation_transactions_total: string
   mercado_libre_buyer_reputation_transactions_completed: string
   mercado_libre_nickname: string
+  talent_protocol_login: string
 }
 
 interface VerifiableCredential {
