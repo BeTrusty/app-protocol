@@ -1,4 +1,4 @@
-import { IconGetData } from '@components/icons/IconGetData'
+import { IconGetData } from '@components/Icons/IconGetData'
 import { Title } from '@components/Title'
 
 export function Step3 (): JSX.Element {
