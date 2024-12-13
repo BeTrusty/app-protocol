@@ -9,13 +9,14 @@ import { Separator } from '@components/Separator'
 import { fetchUserById } from '@/utils/fetchUserById'
 import { Title } from '@components/Title'
 import { SelectDataProvider } from '@components/SelectDataProvider'
-import { LogoAirbnb } from '@/components/icons/IconAirbnb'
-import { LogoBCRA } from '@/components/icons/IconBCRA'
-import { LogoFacebook } from '@/components/icons/IconFacebook'
-import { LogoGithub } from '@/components/icons/IconGithub'
-import { LogoInstagram } from '@/components/icons/IconInstagram'
-import { LogoLinkedin } from '@/components/icons/IconLinkedin'
-import { LogoMercadoLibre } from '@/components/icons/IconMercadoLibre'
+import { LogoAirbnb } from '@/components/Icons/IconAirbnb'
+import { LogoBCRA } from '@/components/Icons/IconBCRA'
+import { LogoFacebook } from '@/components/Icons/IconFacebook'
+import { LogoGithub } from '@/components/Icons/IconGithub'
+import { LogoInstagram } from '@/components/Icons/IconInstagram'
+import { LogoLinkedin } from '@/components/Icons/IconLinkedin'
+import { LogoMercadoLibre } from '@/components/Icons/IconMercadoLibre'
+import { LogoAutoPen } from '@/components/Icons/IconAutoPen'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 
@@ -82,6 +83,50 @@ export function ConnectYourData ({
   const loginMercadoLibre = () => {
     router.push(getUrlMercadoLibre())
   }
+
+  const getUrlAutoPen = () => {
+    try {
+      void CreateSignatureAutoPen('Saymon', 'Porras', 12345678, '0x5e2c00ed208912df89BD65B407A0b57e899850b1');
+    } catch (error) {
+      console.error('Error creating signature:', error);
+    }
+  };
+
+  /**
+   * @function CreateSignatureAutoPen
+   * @description Redirecciona al usuario a la creación de firma digital con AutoPen
+   * @returns {void}
+   */
+  const CreateSignatureAutoPen = async (name: string, lastName: string, dni: number, publicKey: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/providers/autopen', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          lastName,
+          dni,
+          publicKey
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Response:', data);
+    } catch (err) {
+      console.error('Error:', err instanceof Error ? err.message : 'An unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -174,6 +219,15 @@ export function ConnectYourData ({
                 isAvailable={true}
               />
             )}
+          </Skeleton>
+          <Skeleton isLoaded={true} className='rounded-lg w-full'>
+              <SelectDataProvider
+                id='autopen'
+                text='AutoPen'
+                icon={<LogoAutoPen width='35px' />}
+                onClick={getUrlAutoPen}
+                isAvailable={true}
+              />
           </Skeleton>
         </div>
 
