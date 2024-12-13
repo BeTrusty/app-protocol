@@ -99,6 +99,7 @@ export function ConnectYourData ({
 
 
   const getUrlTalentProtocol = async (id: string) => {
+    console.log('ENV: ', process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL)
 
     if (id !== '') { // Asegúrate de que `id` esté disponible
       try {
@@ -109,16 +110,15 @@ export function ConnectYourData ({
           },
         });
         const data = await response.json();
+        console.log({data});
         setTalentProtocol(data)
-    setRedes({...redes, talentProtocol: true})
+        setRedes({...redes, talentProtocol: true})
 
         //Validacion necesaria
       } catch (error) {
         console.error('Error al llamar a la API de Talent Protocol:', error);
-        //return `${urlLoginTalentProtocol}?worldid_email=${email}&country_code=AR`;
       }
     } else {
-      //return `${urlLoginTalentProtocol}`;
     }
   }
 
@@ -130,8 +130,6 @@ export function ConnectYourData ({
   const loginTalentProtocol = async () => {
     const id = '0xC38555a1Afcd8394532Caa11D0be60Df166eC188' //Test ID
     const url = await getUrlTalentProtocol(id);
-    console.log(url);
-    //router.push(url);
   }
 
   const getUrlAutoPen = () => {
