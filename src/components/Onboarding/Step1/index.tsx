@@ -1,4 +1,4 @@
-import { IconWelcome } from '@/components/icons'
+import { IconWelcome } from '@/components/Icons'
 import { Title } from '@components/Title'
 
 export function Step1 (): JSX.Element {
