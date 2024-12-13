@@ -33,7 +33,7 @@ export function Login (): JSX.Element {
     <section className='flex flex-col justify-start items-center w-full max-w-[400px] mt-5 p-5'>
       <Title text='Inicia sesión' />
       <Image
-        src='/img/SSO.png'
+        src='/img/SSO.webp'
         width={400}
         height={500}
         alt='Imagen del pasaporte de WorldID'
