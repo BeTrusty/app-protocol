@@ -21,35 +21,35 @@ export default function ConnectPage ({
 }
 
 // Tipar las props de la página
-export async function getServerSideProps ({ query }: NextPageContext) {
-  const { id_user, email } = query
+// export async function getServerSideProps ({ query }: NextPageContext) {
+//   const { id_user, email } = query
 
-  const id = id_user ?? ''
-  const emailQuery = email ?? ''
-  if (typeof id === 'string' && id !== '' && id !== undefined && id !== null) {
-    const { user } = await fetchUserById(id)
+//   const id = id_user ?? ''
+//   const emailQuery = email ?? ''
+//   if (typeof id === 'string' && id !== '' && id !== undefined && id !== null) {
+//     const { user } = await fetchUserById(id)
 
-    if (user?.reputation_level === 'Silver') {
-      return {
-        redirect: {
-          destination: '/passport',
-          permanent: false
-        }
-      }
-    }
-  } else {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false
-      }
-    }
-  }
+//     if (user?.reputation_level === 'Silver') {
+//       return {
+//         redirect: {
+//           destination: '/passport',
+//           permanent: false
+//         }
+//       }
+//     }
+//   } else {
+//     return {
+//       redirect: {
+//         destination: '/login',
+//         permanent: false
+//       }
+//     }
+//   }
 
-  return {
-    props: {
-      id,
-      email: emailQuery
-    }
-  }
-}
+//   return {
+//     props: {
+//       id,
+//       email: emailQuery
+//     }
+//   }
+// }

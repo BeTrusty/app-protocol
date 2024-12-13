@@ -38,3 +38,13 @@ export const API_GET_MERCADO_LIBRE_USER: string =
  */
 export const API_GET_USER: string =
   'https://api-betrusty.vercel.app/user/all?id_user='
+
+/**
+ * @constant {string} API_CREATE_SIGNATURE
+ * @description URL para crear una firma digital con AutoPen
+ */
+export const API_CREATE_SIGNATURE: string =
+  'https://autopen-api-git-main-scammis-projects.vercel.app/api/certificates'
+
+
+
