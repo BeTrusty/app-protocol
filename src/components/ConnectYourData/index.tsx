@@ -16,9 +16,11 @@ import { LogoGithub } from '@/components/Icons/IconGithub'
 import { LogoInstagram } from '@/components/Icons/IconInstagram'
 import { LogoLinkedin } from '@/components/Icons/IconLinkedin'
 import { LogoMercadoLibre } from '@/components/Icons/IconMercadoLibre'
+import { LogoTalentProtocol } from '@/components/Icons/IconTalentProtocol'
 import { LogoAutoPen } from '@/components/Icons/IconAutoPen'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useConnectInformation } from '@/hooks/useConnectInformation'
 
 export function ConnectYourData ({
   email,
@@ -27,28 +29,38 @@ export function ConnectYourData ({
   email: string
   id: string
 }): JSX.Element {
-  const [localId, setLocalId] = useLocalStorage<string>('localId')
-  const [level, setLevel] = useLocalStorage<string>('level')
-  const [didUrl, setDidUrl] = useLocalStorage<string>('didUrl')
-  const [time, setTime] = useLocalStorage<number>('time')
-  const [credential, setCredential] =
-    useLocalStorage<CredentialData>('credential')
-  const [data, setData] = useState<ResponseVCData | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [isLoading, setIsLoading] = useState<{
-    github: boolean
-    mercadoLibre: boolean
-  }>({
-    github: true,
-    mercadoLibre: true
-  })
-  const [error, setError] = useState<string | null>(null)
-  const [user, setUser] = useState<CredentialSubject | null>(null)
-
+  const { localId, 
+    setLocalId,
+    level, 
+    setLevel,
+    didUrl, 
+    setDidUrl,
+    time, 
+    setTime,
+    redes,
+    setRedes,
+    talentProtocol, 
+    setTalentProtocol,
+    credential, 
+    setCredential,
+    data, 
+    setData,
+    loading, 
+    setLoading,
+    isLoading, 
+    setIsLoading,
+    error, 
+    setError,
+    user, 
+    setUser} = useConnectInformation()
   const router = useRouter()
 
   const urlLoginGithub: string = `https://api-betrusty.vercel.app/github/login`
   const urlLoginMl: string = `https://api-betrusty.vercel.app/ml/login`
+
+  //Nueva url hay que crearla
+  const urlLoginTalentProtocol: string = `https://api-betrusty.vercel.app/talentprotocol/login`
+
 
   const getUrlGithub = () => {
     if (email !== '') {
@@ -67,6 +79,7 @@ export function ConnectYourData ({
     router.push(getUrlGithub())
   }
 
+
   const getUrlMercadoLibre = () => {
     if (email !== '') {
       return `${urlLoginMl}?worldid_email=${email}&country_code=AR`
@@ -82,6 +95,41 @@ export function ConnectYourData ({
    */
   const loginMercadoLibre = () => {
     router.push(getUrlMercadoLibre())
+  }
+
+
+  const getUrlTalentProtocol = async (id: string) => {
+    console.log('ENV: ', process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL)
+
+    if (id !== '') { // Asegúrate de que `id` esté disponible
+      try {
+        const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
+          method: 'GET',
+          headers: {
+          'X-API-KEY':	process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL as string ?? '',
+          },
+        });
+        const data = await response.json();
+        console.log({data});
+        setTalentProtocol(data)
+        setRedes({...redes, talentProtocol: true})
+
+        //Validacion necesaria
+      } catch (error) {
+        console.error('Error al llamar a la API de Talent Protocol:', error);
+      }
+    } else {
+    }
+  }
+
+  /**
+   * @function loginTalentProtocol
+   * @description Redirecciona al usuario a la página de login de talent protocol
+   * @returns {void}
+   */
+  const loginTalentProtocol = async () => {
+    const id = '0xA081e1dA16133bB4Ebc7Aab1A9B0588A48D15138' //Test ID
+    const url = await getUrlTalentProtocol(id);
   }
 
   const getUrlAutoPen = () => {
@@ -136,13 +184,15 @@ export function ConnectYourData ({
           setUser(user)
           setIsLoading({
             github: user.github_login ? true : false,
-            mercadoLibre: user.mercado_libre_nickname ? true : false
+            mercadoLibre: user.mercado_libre_nickname ? true : false,
+            talentprotocol: user.talent_protocol_login ? true : false
           })
         }
       }
     }
 
     getUser()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
   /**
@@ -199,7 +249,7 @@ export function ConnectYourData ({
       <div className='flex flex-col justify-start items-center gap-8 w-full'>
         <div className='flex flex-col justify-start items-center gap-2 w-full'>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.mercado_libre_nickname && (
+            {!user?.mercado_libre_nickname && !redes.mercadoLibre && (
               <SelectDataProvider
                 id='mercado-libre'
                 text='Mercado Libre'
@@ -210,7 +260,7 @@ export function ConnectYourData ({
             )}
           </Skeleton>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.github_login && (
+            {!user?.github_login && !redes.github &&  (
               <SelectDataProvider
                 id='github'
                 text='Github'
@@ -221,6 +271,15 @@ export function ConnectYourData ({
             )}
           </Skeleton>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
+            {!user?.talent_protocol_login && !redes.talentProtocol &&  (
+              <SelectDataProvider
+                id='talent-protocol'
+                text='Talent Protocol'
+                icon={<LogoTalentProtocol width='35px' />}
+                onClick={loginTalentProtocol}
+                isAvailable={true}
+              />
+            )}
               <SelectDataProvider
                 id='autopen'
                 text='AutoPen'
