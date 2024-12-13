@@ -30,19 +30,22 @@ export function Login (): JSX.Element {
   };
 
   return (
-    <section className='flex flex-col justify-start items-center w-full max-w-[400px] mt-5 p-5'>
+    <section className='flex flex-col justify-start items-center w-full max-w-[400px] mt-20 p-5'>
       <Title text='Inicia sesión' />
       <Image
         src='/img/SSO.png'
-        width={400}
+        width={100}
         height={500}
         alt='Imagen del pasaporte de WorldID'
+        className='mt-4' // Añade margen superior a la imagen
       />
+      <div className='mt-4'></div> 
       <Button
         color='primary'
         radius='full'
         className='w-full max-w-[260px]'
         onClick={signInWithWorldID}
+        
       >
         Conectar WorldID
       </Button>
