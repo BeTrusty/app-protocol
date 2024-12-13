@@ -1,6 +1,5 @@
 import {
   CredentialData,
-  type CredentialSubject,
   type ResponseVCData
 } from '@/types/credentials'
 import { useEffect, useState } from 'react'
@@ -18,8 +17,8 @@ import { LogoLinkedin } from '@/components/Icons/IconLinkedin'
 import { LogoMercadoLibre } from '@/components/Icons/IconMercadoLibre'
 import { LogoTalentProtocol } from '@/components/Icons/IconTalentProtocol'
 import { Button, Skeleton } from '@nextui-org/react'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useConnectInformation } from '@/hooks/useConnectInformation'
+import { AddModal } from './addModal'
 
 export function ConnectYourData ({
   email,
@@ -53,7 +52,8 @@ export function ConnectYourData ({
     user, 
     setUser} = useConnectInformation()
   const router = useRouter()
-
+  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [redModal,setRedModal] = useState<string>("")
   const urlLoginGithub: string = `https://api-betrusty.vercel.app/github/login`
   const urlLoginMl: string = `https://api-betrusty.vercel.app/ml/login`
 
@@ -110,7 +110,7 @@ export function ConnectYourData ({
         const data = await response.json();
         setTalentProtocol(data)
     setRedes({...redes, talentProtocol: true})
-
+console.log({data})
         //Validacion necesaria
       } catch (error) {
         console.error('Error al llamar a la API de Talent Protocol:', error);
@@ -131,6 +131,16 @@ export function ConnectYourData ({
     const url = await getUrlTalentProtocol(id);
     console.log(url);
     //router.push(url);
+  }
+
+  const openLoginModal = (red:string) => {
+    if(red !== ""){
+    setOpenModal(true)
+      setRedModal(red)
+    }
+    else{
+      return
+    }
   }
 
 
@@ -212,7 +222,7 @@ export function ConnectYourData ({
                 id='mercado-libre'
                 text='Mercado Libre'
                 icon={<LogoMercadoLibre width='40px' />}
-                onClick={loginMercadoLibre}
+                onClick={()=>openLoginModal("Mercado Libre")}
                 isAvailable={true}
               />
             )}
@@ -223,7 +233,7 @@ export function ConnectYourData ({
                 id='github'
                 text='Github'
                 icon={<LogoGithub width='35px' />}
-                onClick={loginGithub}
+                onClick={()=>openLoginModal("GitHub")}
                 isAvailable={true}
               />
             )}
@@ -234,7 +244,7 @@ export function ConnectYourData ({
                 id='talent-protocol'
                 text='Talent Protocol'
                 icon={<LogoTalentProtocol width='35px' />}
-                onClick={loginTalentProtocol}
+                onClick={()=>openLoginModal("Talent Protocol")}
                 isAvailable={true}
               />
             )}
@@ -305,6 +315,8 @@ export function ConnectYourData ({
           />
         </div>
       </div>
+      
+      {openModal ? <AddModal isOpen={openModal} setIsOpen={setOpenModal} red={redModal} loginMercadoLibre={loginMercadoLibre} loginTalentProtocol={loginTalentProtocol} loginGithub={loginGithub}/> : null}
     </section>
   )
 }

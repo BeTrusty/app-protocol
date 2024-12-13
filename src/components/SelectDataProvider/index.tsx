@@ -27,11 +27,7 @@ export const SelectDataProvider = memo(function PaymentMethod ({
         }`}
         onClick={onSelected}
       >
-        {select && (
-          <span className='absolute -top-1 -right-1 text-secondary'>
-            <BsFillCheckCircleFill size={20} />
-          </span>
-        )}
+     
         <span className='min-w-fit'>{icon}</span>
         <p className='text-lg font-bold w-full mb-0'>{text}</p>
       </div>
