@@ -17,6 +17,7 @@ import { LogoInstagram } from '@/components/Icons/IconInstagram'
 import { LogoLinkedin } from '@/components/Icons/IconLinkedin'
 import { LogoMercadoLibre } from '@/components/Icons/IconMercadoLibre'
 import { LogoTalentProtocol } from '@/components/Icons/IconTalentProtocol'
+import { LogoAutoPen } from '@/components/Icons/IconAutoPen'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useConnectInformation } from '@/hooks/useConnectInformation'
@@ -104,7 +105,7 @@ export function ConnectYourData ({
         const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
           method: 'GET',
           headers: {
-          'X-API-KEY':	'521a7face5859649c3639f01a52961bc2cb35773a01cb498750018ba5ee7',
+          'X-API-KEY':	process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL as string ?? '',
           },
         });
         const data = await response.json();
@@ -133,6 +134,49 @@ export function ConnectYourData ({
     //router.push(url);
   }
 
+  const getUrlAutoPen = () => {
+    try {
+      void CreateSignatureAutoPen('Saymon', 'Porras', 12345678, '0x5e2c00ed208912df89BD65B407A0b57e899850b1');
+    } catch (error) {
+      console.error('Error creating signature:', error);
+    }
+  };
+
+  /**
+   * @function CreateSignatureAutoPen
+   * @description Redirecciona al usuario a la creación de firma digital con AutoPen
+   * @returns {void}
+   */
+  const CreateSignatureAutoPen = async (name: string, lastName: string, dni: number, publicKey: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/providers/autopen', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          lastName,
+          dni,
+          publicKey
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Response:', data);
+    } catch (err) {
+      console.error('Error:', err instanceof Error ? err.message : 'An unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -238,6 +282,13 @@ export function ConnectYourData ({
                 isAvailable={true}
               />
             )}
+              <SelectDataProvider
+                id='autopen'
+                text='AutoPen'
+                icon={<LogoAutoPen width='35px' />}
+                onClick={getUrlAutoPen}
+                isAvailable={true}
+              />
           </Skeleton>
         </div>
 
