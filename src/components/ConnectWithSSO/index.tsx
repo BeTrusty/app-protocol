@@ -1,34 +1,41 @@
-import React from "react";
-import { Button } from "@nextui-org/react";
-import { connect } from "@wagmi/core";
-import { config, ssoConnector } from "../../../zkSyncConfig";
-import { zksyncSepoliaTestnet } from "viem/chains";
+import { useState } from 'react'
+import { Button } from '@nextui-org/react'
+import { connect } from '@wagmi/core'
+import { ssoConnector } from '@/config/ssoZKsync'
+import { wagmiConfig } from '@/config/wagmi'
 
 const ConnectWithSSO: React.FC = () => {
-   const handleConnect = async () => {
-       try {
-          const connection = await connect(config, {
-             connector: ssoConnector,
-             chainId: 1,
-          });
-          console.log("Conexión exitosa:", connection);
-          console.log(`Sesión iniciada con dirección: ${connection.accounts[0]}`);
-       } catch (error) {
-          console.error("Error al conectar con zkSync SSO:", error);
-          console.log("Error al iniciar sesión con zkSync SSO.");
-       }
-    };
+  const [address, setAddress] = useState<null | `0x${string}`>(null)
 
-   return (
-        <Button
-        color="primary"
-        radius="full"
-        className="w-full max-w-[260px] mt-4"
+  const handleConnect = async () => {
+    try {
+      const connection = await connect(wagmiConfig, {
+        connector: ssoConnector,
+        chainId: 300
+      })
+
+      if (!connection.accounts) {
+        console.error('Error al conectar con zkSync SSO:', connection)
+      }
+
+      setAddress(connection.accounts[0])
+    } catch (error) {
+      console.error('Error al conectar con zkSync SSO:', error)
+    }
+  }
+
+  return (
+    <>
+      <Button
+        color='primary'
+        radius='full'
+        className='w-full max-w-[260px] mt-4'
         onClick={handleConnect}
-    >
+      >
         Iniciar sesión con zkSync SSO
-    </Button>
-   );
-};
+      </Button>
+    </>
+  )
+}
 
-export default ConnectWithSSO;
+export default ConnectWithSSO
