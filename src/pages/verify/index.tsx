@@ -138,19 +138,19 @@ export default function Page() {
       const pC = [BigInt(proof.pi_c[0]).toString(), BigInt(proof.pi_c[1]).toString()];
       const pubSignals = [BigInt(publicSignals[0]).toString()];
 
-      console.log("pA2", pA);
-      console.log("pB2", pB);
-      console.log("pC2", pC);
-      console.log("publicSignalsAux", publicSignals);
+      console.log("pA", pA);
+      console.log("pB", pB);
+      console.log("pC", pC);
+      console.log("publicSignals", publicSignals);
 
-      const result2 = await contract.read.verifyProof([
+      const result = await contract.read.verifyProof([
         pA,
         pB,
         pC,
         pubSignals,
       ]);
 
-      console.log("Verification result2:", result2);
+      console.log("Verification result:", result);
 
       resultOfProof = true;
     } catch (error) {
