@@ -8,10 +8,11 @@ export function useConnectInformation () {
     const [level, setLevel] = useLocalStorage<string>('level')
     const [didUrl, setDidUrl] = useLocalStorage<string>('didUrl')
     const [time, setTime] = useLocalStorage<number>('time')
-    const [redes, setRedes] = useState<{talentProtocol:boolean, mercadoLibre:boolean, github:boolean}>(
-      {talentProtocol:false, mercadoLibre:false, github:false}
+    const [redes, setRedes] = useState<{talentProtocol:boolean, mercadoLibre:boolean, github:boolean, autopen:boolean}>(
+      {talentProtocol:false, mercadoLibre:false, github:false, autopen:false}
     )
     const [talentProtocol, setTalentProtocol] = useState<{}>({})
+    const [autopen, setAutopen] = useState<{}>({})
     const [credential, setCredential] =
       useLocalStorage<CredentialData>('credential')
     const [data, setData] = useState<ResponseVCData | null>(null)
@@ -40,6 +41,8 @@ export function useConnectInformation () {
     setRedes,
     talentProtocol, 
     setTalentProtocol,
+    autopen, 
+    setAutopen,
     credential, 
     setCredential,
     data, 

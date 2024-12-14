@@ -1,3 +1,5 @@
+import { type Token } from '@/types/zksync'
+
 /**
  * @constant {string} API_COUNTRY_CODE
  * @description Código de país para la API de Mercado Libre
@@ -46,5 +48,11 @@ export const API_GET_USER: string =
 export const API_CREATE_SIGNATURE: string =
   'https://autopen-api-git-main-scammis-projects.vercel.app/api/certificates'
 
-
-
+/**
+ * @constant {string} TOKEN
+ * @description Token de la red zkSync
+ */
+export const TOKEN: Token = {
+  address: '0xa1cf087DB965Ab02Fb3CFaCe1f5c63935815f044',
+  decimals: 18
+}
