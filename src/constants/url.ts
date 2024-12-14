@@ -1,4 +1,20 @@
 /**
+ * @constant {string} ENV
+ * @description Entorno de ejecución
+ * @default 'development'
+ */
+const ENV = process.env.NODE_ENV
+
+/**
+ * @constant {string} ADDRESS_VERIFIER
+ * @description Dirección del verificador de credenciales
+ * @default '0x1b8f823ed41Bd01851B6f9Fcc1D66517458885B5'
+ * @note En producción se debe cambiar por la dirección del contrato desplegado en mainnet
+ */
+export const ADDRESS_VERIFIER = ENV === 'development' ? '0x1b8f823ed41Bd01851B6f9Fcc1D66517458885B5' : '0x1b8f823ed41Bd01851B6f9Fcc1D66517458885B5'
+
+
+/**
  * @constant {string} API_COUNTRY_CODE
  * @description Código de país para la API de Mercado Libre
  * @default 'https://api.country.is/'
