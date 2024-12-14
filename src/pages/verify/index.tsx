@@ -33,7 +33,6 @@ export default function Page() {
     generateProof();
   }, []);
 
-
   const MY_CONTRACT_ADDRESS = "0x1b8f823ed41Bd01851B6f9Fcc1D66517458885B5";
   const MY_CONTRACT_ABI_PATH = [
     {
@@ -74,7 +73,6 @@ export default function Page() {
 
   const sendProof = async () => {
     let resultOfProof = false;
-    let proofAux, publicSignalsAux;
 
     try {
       if (typeof window.snarkjs === "undefined") {
@@ -111,8 +109,18 @@ export default function Page() {
         "/artifacts/balance_0001.zkey"
       );
 
-      proofAux = proof;
-      publicSignalsAux = publicSignals;
+      console.log("Proof generated client-side: ", proof);
+      console.log("Public signals generated client-side: ", publicSignals);
+
+      const vkey = await fetch("/artifacts/verification_key.json").then(
+        function (res) {
+          return res.json();
+        }
+      );
+
+      const res = await snarkjs.groth16.verify(vkey, publicSignals, proof);
+
+      console.log("Proof verified client-side: ", res);
 
       const contract = getContract({
         address: MY_CONTRACT_ADDRESS,
@@ -120,27 +128,30 @@ export default function Page() {
         client: publicClient,
       });
       // Preparar parámetros para el contrato
-      let pA = proofAux.pi_a
-      pA.pop()
-      let pB = proofAux.pi_b
-      pB.pop()
-      let pC = proofAux.pi_c
-      pC.pop()
 
-      console.log("pA", pA);
-      console.log("pB", pB);
-      console.log("pC", pC);
-      console.log("publicSignalsAux", publicSignalsAux);
+      // Preparar parámetros
+      const pA = [BigInt(proof.pi_a[0]).toString(), BigInt(proof.pi_a[1]).toString()];
+      const pB = [
+        [BigInt(proof.pi_b[0][0]).toString(), BigInt(proof.pi_b[0][1]).toString()],
+        [BigInt(proof.pi_b[1][0]).toString(), BigInt(proof.pi_b[1][1]).toString()],
+      ];
+      const pC = [BigInt(proof.pi_c[0]).toString(), BigInt(proof.pi_c[1]).toString()];
+      const pubSignals = [BigInt(publicSignals[0]).toString()];
 
-      // Llamar al contrato con los datos
-      const result = await contract.read.verifyProof([
+      console.log("pA2", pA);
+      console.log("pB2", pB);
+      console.log("pC2", pC);
+      console.log("publicSignalsAux", publicSignals);
+
+      const result2 = await contract.read.verifyProof([
         pA,
         pB,
         pC,
-        publicSignalsAux,
+        pubSignals,
       ]);
 
-      console.log("Verification result:", result);
+      console.log("Verification result2:", result2);
+
       resultOfProof = true;
     } catch (error) {
       console.error("Error:", error);
