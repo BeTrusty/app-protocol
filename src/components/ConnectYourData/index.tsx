@@ -39,8 +39,10 @@ export function ConnectYourData ({
     setTime,
     redes,
     setRedes,
-    talentProtocol, 
+    talentProtocol,
     setTalentProtocol,
+    autopen,
+    setAutopen,
     credential, 
     setCredential,
     data, 
@@ -99,8 +101,6 @@ export function ConnectYourData ({
 
 
   const getUrlTalentProtocol = async (id: string) => {
-    console.log('ENV: ', process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL)
-
     if (id !== '') { // Asegúrate de que `id` esté disponible
       try {
         const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
@@ -169,6 +169,8 @@ export function ConnectYourData ({
   
       const data = await response.json();
       console.log('Response:', data);
+      setAutopen(data);
+      setRedes({...redes, autopen: true})
     } catch (err) {
       console.error('Error:', err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
@@ -280,6 +282,9 @@ export function ConnectYourData ({
                 isAvailable={true}
               />
             )}
+            </Skeleton>
+            <Skeleton isLoaded={true} className='rounded-lg w-full'>
+              {!user?.autopen_login && !redes.autopen &&  (
               <SelectDataProvider
                 id='autopen'
                 text='AutoPen'
@@ -287,7 +292,9 @@ export function ConnectYourData ({
                 onClick={getUrlAutoPen}
                 isAvailable={true}
               />
-          </Skeleton>
+            )}
+             </Skeleton>
+
         </div>
 
         {user && (
