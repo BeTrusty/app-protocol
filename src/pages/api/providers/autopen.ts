@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        apiKey: "btrusty_test_c8b4f7d2e9a5k3p6m8n9q4w5",
+        apiKey: process.env.API_KEY_AUTOPEN,
         personalInfo: {
           name: `${name} ${lastName}`,
           dni: `${dni}`

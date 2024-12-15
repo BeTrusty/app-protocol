@@ -1,37 +1,20 @@
-import Image from 'next/image'
 import { Title } from '@components/Title'
-import { Button } from '@nextui-org/react'
+import { ConnectWithSSO } from '@components/ConnectWithSSO'
+import { IconFingerprint } from '../Icons'
 
 export function Login (): JSX.Element {
-  const endpointApi =
-    'https://id.worldcoin.org/authorize?response_type=code&redirect_uri=https://api-betrusty.vercel.app/worldid/callback&scope=openid+profile+email&client_id=app_b5bf70a63e4ecd0be5f1b754b6675728'
-
-  /**
-   * @function signInWithWorldID
-   * @description Función para redirigir al usuario a la página de WorldID
-   * @returns {void}
-   */
-  const signInWithWorldID = (): void => {
-    window.location.href = endpointApi
-  }
-
   return (
-    <section className='flex flex-col justify-start items-center w-full max-w-[400px] mt-5 p-5'>
-      <Title text='Inicia sesión' />
-      <Image
-        src='/img/worldId.avif'
-        width={400}
-        height={500}
-        alt='Imagen del pasaporte de WorldID'
-      />
-      <Button
-        color='primary'
-        radius='full'
-        className='w-full max-w-[260px]'
-        onClick={signInWithWorldID}
-      >
-        Conectar WorldID
-      </Button>
+    <section className='flex flex-col justify-center items-center gap-8 min-h-full w-full max-w-[300px]'>
+      <div className='flex flex-col gap-2 w-full'>
+        <Title text='¡Prueba tu humanidad!' />
+        <p className='text-base'>
+          Inicia sesión con SS0 para verificar que eres un humano
+        </p>
+      </div>
+      <div className='w-full max-w-[350px] flex flex-row justify-center items-center'>
+        <IconFingerprint width='100%' />
+      </div>
+      <ConnectWithSSO />
     </section>
   )
 }
