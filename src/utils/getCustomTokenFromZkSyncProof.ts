@@ -21,6 +21,12 @@ export async function getCustomTokenFromZkSyncProof (
     zkSyncId: zkSyncUser.userId
   }
 
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.applicationDefault()
+    })
+  }
+
   const customToken = await admin
     .auth()
     .createCustomToken(zkSyncUser.userId, additionalClaims)
