@@ -1,6 +1,7 @@
 import { TalentProtocol } from '@/types/talentProtocol'
 
 export const initTalentProtocol: TalentProtocol = {
+  userId: '',
   passport: {
     activity_score: 0,
     calculating_score: false,
