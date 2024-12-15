@@ -1,6 +1,6 @@
+import { Admin } from '@/firebase/admin'
 import { type ZkSyncProof } from '@/types/zksync'
 import { verifyZkSyncUser } from '@/utils/verifyZkSyncUser'
-import admin from 'firebase-admin'
 
 /**
  * Genera un Custom Token de Firebase a partir de la información de zkSync.
@@ -21,15 +21,10 @@ export async function getCustomTokenFromZkSyncProof (
     zkSyncId: zkSyncUser.userId
   }
 
-  if (!admin.apps.length) {
-    admin.initializeApp({
-      credential: admin.credential.applicationDefault()
-    })
-  }
-
-  const customToken = await admin
-    .auth()
-    .createCustomToken(zkSyncUser.userId, additionalClaims)
+  const customToken = await Admin.auth().createCustomToken(
+    zkSyncUser.userId,
+    additionalClaims
+  )
 
   return customToken
 }

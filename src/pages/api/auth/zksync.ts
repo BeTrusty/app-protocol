@@ -2,9 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { ResponseData, ZkSyncProofRequestBody } from '@/types/zksync'
 
-// Modules and main functions
-import admin from 'firebase-admin'
-
 // Utils
 import { initAuth } from '@/firebase/initAuth'
 import { errorHandler } from '@/utils/errorHandler'
