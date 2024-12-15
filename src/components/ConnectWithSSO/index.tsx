@@ -62,9 +62,10 @@ export const ConnectWithSSO = memo(function ConnectWithSSO () {
   // #region RENDER
   return (
     <Button
+      fullWidth
       color='primary'
       radius='full'
-      className='w-full max-w-[260px] mt-4'
+      className='w-full mt-4'
       onClick={handleConnect}
     >
       Iniciar sesión
