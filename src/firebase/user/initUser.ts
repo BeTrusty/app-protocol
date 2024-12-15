@@ -1,7 +1,7 @@
-import { User } from "@/types/user";
+import { User } from '@/types/user'
 
-export const initUser : User = {
-    id: '',
-    address: '',
-    poh: false
+export const initUser: User = {
+  id: '',
+  address: '',
+  poh: false
 }
