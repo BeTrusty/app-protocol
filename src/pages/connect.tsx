@@ -1,4 +1,6 @@
 import { type NextPageContext } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { fetchUserById } from '@/utils/fetchUserById'
 import { LayoutPages } from '@/layouts/LayoutPage'
 import { ConnectYourData } from '@/components/ConnectYourData'
@@ -10,6 +12,20 @@ export default function ConnectPage ({
   id: string
   email: string
 }): JSX.Element {
+  const router = useRouter();
+  const { login, name, avatar_url } = router.query;
+
+  useEffect(() => {
+    // Esto se ejecuta en el lado del cliente, por lo que se verá en la consola del navegador.
+    if (login || name || avatar_url) {
+      console.log('Datos del usuario desde GitHub:', {
+        login,
+        name,
+        avatar_url
+      });
+    }
+  }, [login, name, avatar_url]);
+
   return (
     <LayoutPages
       title='Conecta tu información'
@@ -20,7 +36,9 @@ export default function ConnectPage ({
   )
 }
 
-// Tipar las props de la página
+// Si utilizas getServerSideProps, lo mantienes o ajustas según tu lógica.
+// Por ejemplo, si quieres seguir usando la lógica anterior, descomenta y ajusta:
+
 // export async function getServerSideProps ({ query }: NextPageContext) {
 //   const { id_user, email } = query
 

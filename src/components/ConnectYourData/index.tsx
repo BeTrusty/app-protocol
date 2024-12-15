@@ -22,6 +22,8 @@ import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useConnectInformation } from '@/hooks/useConnectInformation'
 
+import { signIn } from 'next-auth/react';
+
 export function ConnectYourData ({
   email,
   id
@@ -64,13 +66,6 @@ export function ConnectYourData ({
   const urlLoginTalentProtocol: string = `https://api-betrusty.vercel.app/talentprotocol/login`
 
 
-  const getUrlGithub = () => {
-    if (email !== '') {
-      return `${urlLoginGithub}?worldid_email=${email}`
-    } else {
-      return `${urlLoginGithub}`
-    }
-  }
 
   /**
    * @function loginGithub
@@ -78,7 +73,7 @@ export function ConnectYourData ({
    * @returns {void}
    */
   const loginGithub = () => {
-    router.push(getUrlGithub())
+    router.push(`/api/providers/github/login?id="${1234}"`);
   }
 
 
