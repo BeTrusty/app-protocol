@@ -6,6 +6,7 @@ import type { ResponseData, ZkSyncProofRequestBody } from '@/types/zksync'
 import { initAuth } from '@/firebase/initAuth'
 import { errorHandler } from '@/utils/errorHandler'
 import { getCustomTokenFromZkSyncProof } from '@/utils/getCustomTokenFromZkSyncProof'
+import { createUser } from '@/firebase/user/create'
 
 initAuth()
 
@@ -25,6 +26,11 @@ export default errorHandler(async function handler (
 
   try {
     const customToken = await getCustomTokenFromZkSyncProof(zkSyncProof)
+    createUser({
+      id: zkSyncProof.userAddress,
+      address: zkSyncProof.userAddress,
+      poh: true
+    })
     return res.status(200).json({ customToken })
   } catch (error: any) {
     console.error('Error al generar el Custom Token:', error)
