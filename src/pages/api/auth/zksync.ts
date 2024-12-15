@@ -6,15 +6,12 @@ import type { ResponseData, ZkSyncProofRequestBody } from '@/types/zksync'
 import admin from 'firebase-admin'
 
 // Utils
+import { initAuth } from '@/firebase/initAuth'
 import { errorHandler } from '@/utils/errorHandler'
 import { getCustomTokenFromZkSyncProof } from '@/utils/getCustomTokenFromZkSyncProof'
 import { createUser } from '@/firebase/user/create'
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault()
-  })
-}
+initAuth()
 
 export default errorHandler(async function handler (
   req: NextApiRequest,
