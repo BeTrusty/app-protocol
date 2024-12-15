@@ -8,7 +8,7 @@ import { errorHandler } from '@/utils/errorHandler'
 import { getCustomTokenFromZkSyncProof } from '@/utils/getCustomTokenFromZkSyncProof'
 import { createUser } from '@/firebase/user/create'
 
-initAuth()
+// initAuth()
 
 export default errorHandler(async function handler (
   req: NextApiRequest,
