@@ -1,5 +1,6 @@
 import { type PropsLayoutPages } from '@/types/layouts'
 import Head from 'next/head'
+import Script from 'next/script'
 
 export function LayoutPages ({
   title,
@@ -18,6 +19,13 @@ export function LayoutPages ({
         <title>{title}</title>
         <meta name='description' content={description} />
       </Head>
+      <Script
+        src='js/snarkjs.min.js'
+        strategy='lazyOnload'
+        onLoad={() => {
+          console.log('snarkjs.min.js loaded')
+        }}
+      />
       <main className='w-full min-h-screen flex flex-col justify-center items-center text-default-700 bg-gray-50'>
         {children}
       </main>
