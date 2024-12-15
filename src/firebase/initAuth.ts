@@ -43,7 +43,7 @@ export function initAuth (): void {
         params.get('next') !== ''
           ? (params.get('next') as string)
           : undefined
-      const destURL = '/'
+      const destURL = '/connect'
       return next !== undefined && next !== null && next !== '' ? next : destURL
     },
     loginAPIEndpoint: '/api/auth/login',
@@ -72,7 +72,7 @@ export function initAuth (): void {
       ...firebaseConfig
     },
     cookies: {
-      name: 'BeTrusty', // required
+      name: 'BeTrusty-Protocol', // required
       // Keys are required unless you set `signed` to `false`.
       // The keys cannot be accessible on the client side.
       keys: [
