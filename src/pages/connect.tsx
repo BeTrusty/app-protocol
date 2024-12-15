@@ -2,15 +2,29 @@ import { type NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { fetchUserById } from '@/utils/fetchUserById'
+// #region IMPORTS
+
+// Types and interfaces
+import { type User } from '@/types/user'
+
+// Modules and main functions
+import { docs, get } from '@/firebase/docs'
+import { AuthAction, withUser, withUserTokenSSR } from 'next-firebase-auth'
+
+// Layouts
 import { LayoutPages } from '@/layouts/LayoutPage'
+
+// Components
+import { Title } from '@/components/Title'
 import { ConnectYourData } from '@/components/ConnectYourData'
 
-export default function ConnectPage ({
+// #region PAGE
+export function ConnectPage ({
   id,
-  email
+  user
 }: {
   id: string
-  email: string
+  user: User | null
 }): JSX.Element {
   const router = useRouter();
   const { login, name, avatar_url } = router.query;
@@ -31,43 +45,54 @@ export default function ConnectPage ({
       title='Conecta tu información'
       description='Conecta tu información de Mercado Libre y Github de forma segura'
     >
-      <ConnectYourData id={id} email={email} />
+      <>
+        <Title text={id} />
+        <ConnectYourData id={id} email={id} />
+      </>
     </LayoutPages>
   )
 }
 
-// Si utilizas getServerSideProps, lo mantienes o ajustas según tu lógica.
-// Por ejemplo, si quieres seguir usando la lógica anterior, descomenta y ajusta:
+// export const getServerSideProps = withUserTokenSSR({
+//   whenAuthed: AuthAction.RENDER,
+//   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN
+// })(async ({ user }) => {
+//   const id = user?.id
+//   let res
+//   let redirect
+//   let currentUser: User | null = null
 
-// export async function getServerSideProps ({ query }: NextPageContext) {
-//   const { id_user, email } = query
-
-//   const id = id_user ?? ''
-//   const emailQuery = email ?? ''
-//   if (typeof id === 'string' && id !== '' && id !== undefined && id !== null) {
-//     const { user } = await fetchUserById(id)
-
-//     if (user?.reputation_level === 'Silver') {
-//       return {
-//         redirect: {
-//           destination: '/passport',
-//           permanent: false
-//         }
-//       }
-//     }
-//   } else {
-//     return {
-//       redirect: {
+//   if (id !== null && id !== undefined) {
+//     try {
+//       res = await get({ refDoc: docs(id).users })
+//       currentUser = res.data
+//     } catch {
+//       redirect = {
 //         destination: '/login',
 //         permanent: false
 //       }
+//     }
+//   } else {
+//     redirect = {
+//       destination: '/login',
+//       permanent: false
 //     }
 //   }
 
 //   return {
 //     props: {
-//       id,
-//       email: emailQuery
-//     }
+//       user: currentUser,
+//       id
+//     },
+//     redirect
 //   }
-// }
+// })
+
+// #region EXPORTS
+export default withUser<{
+  id: string
+  user: User | null
+}>({
+  whenAuthed: AuthAction.RENDER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
+})(ConnectPage)

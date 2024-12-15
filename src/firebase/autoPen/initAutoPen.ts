@@ -1,17 +1,17 @@
-import { AutoPen } from "@/types/autoPen";
+import { AutoPen } from '@/types/autoPen'
 
 export const initAutoPen: AutoPen = {
-    nft: {
-        tokenId: "",
-        contractAddress:"",
-        transactionHash: "",
-    },
-    certificate: {
-        serialNumber: "",
-        subject: "",
-        issuer: "",
-        validFrom:"",
-        validTo: "",
-        pemData: []
-    }
+  nft: {
+    tokenId: '',
+    contractAddress: '',
+    transactionHash: ''
+  },
+  certificate: {
+    serialNumber: '',
+    subject: '',
+    issuer: '',
+    validFrom: '',
+    validTo: '',
+    pemData: []
+  }
 }
