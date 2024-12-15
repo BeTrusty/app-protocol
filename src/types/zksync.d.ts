@@ -11,3 +11,12 @@ export interface ZkSyncProof {
 export interface ZkSyncUser {
   userId: string
 }
+
+export interface ZkSyncProofRequestBody {
+  zkSyncProof: {
+    userAddress: string
+    isValid: boolean
+  }
+}
+
+export type ResponseData = { customToken: string } | { error: string }
