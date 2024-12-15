@@ -26,7 +26,7 @@ export default errorHandler(async function handler (
 
   try {
     const customToken = await getCustomTokenFromZkSyncProof(zkSyncProof)
-    createUser({
+    await createUser({
       id: zkSyncProof.userAddress,
       address: zkSyncProof.userAddress,
       poh: true

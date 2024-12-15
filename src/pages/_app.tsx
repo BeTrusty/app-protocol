@@ -11,16 +11,19 @@ import { NextUIProvider } from '@nextui-org/react'
 // Modules and main functions
 import { initAuth } from '@/firebase/initAuth'
 import { withUser } from 'next-firebase-auth'
+
 initAuth()
 
 // Componente App que envuelve a toda la aplicación
-const App =  ({ Component, pageProps }: AppProps)=> {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <Provider>
-      <NextUIProvider>
-        <Component {...pageProps} />
-      </NextUIProvider>
-    </Provider>
+    <>
+      <Provider>
+        <NextUIProvider>
+          <Component {...pageProps} />
+        </NextUIProvider>
+      </Provider>
+    </>
   )
 }
 

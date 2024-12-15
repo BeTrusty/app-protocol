@@ -31,13 +31,14 @@ export function ConnectYourData ({
   email: string
   id: string
 }): JSX.Element {
-  const { localId, 
+  const {
+    localId,
     setLocalId,
-    level, 
+    level,
     setLevel,
-    didUrl, 
+    didUrl,
     setDidUrl,
-    time, 
+    time,
     setTime,
     redes,
     setRedes,
@@ -45,18 +46,19 @@ export function ConnectYourData ({
     setTalentProtocol,
     autopen,
     setAutopen,
-    credential, 
+    credential,
     setCredential,
-    data, 
+    data,
     setData,
-    loading, 
+    loading,
     setLoading,
-    isLoading, 
+    isLoading,
     setIsLoading,
-    error, 
+    error,
     setError,
-    user, 
-    setUser} = useConnectInformation()
+    user,
+    setUser
+  } = useConnectInformation()
   const router = useRouter()
 
   const urlLoginGithub: string = `https://api-betrusty.vercel.app/github/login`
@@ -65,7 +67,13 @@ export function ConnectYourData ({
   //Nueva url hay que crearla
   const urlLoginTalentProtocol: string = `https://api-betrusty.vercel.app/talentprotocol/login`
 
-
+  const getUrlGithub = () => {
+    if (email !== '') {
+      return `${urlLoginGithub}?worldid_email=${email}`
+    } else {
+      return `${urlLoginGithub}`
+    }
+  }
 
   /**
    * @function loginGithub
@@ -75,7 +83,6 @@ export function ConnectYourData ({
   const loginGithub = () => {
     router.push(`/api/providers/github/login?id="${1234}"`);
   }
-
 
   const getUrlMercadoLibre = () => {
     if (email !== '') {
@@ -94,24 +101,29 @@ export function ConnectYourData ({
     router.push(getUrlMercadoLibre())
   }
 
-
   const getUrlTalentProtocol = async (id: string) => {
-    if (id !== '') { // Asegúrate de que `id` esté disponible
+    if (id !== '') {
+      // Asegúrate de que `id` esté disponible
       try {
-        const response = await fetch(`https://api.talentprotocol.com/api/v2/passports/${id}`, {
-          method: 'GET',
-          headers: {
-          'X-API-KEY':	process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL as string ?? '',
-          },
-        });
-        const data = await response.json();
-        console.log({data});
+        const response = await fetch(
+          `https://api.talentprotocol.com/api/v2/passports/${id}`,
+          {
+            method: 'GET',
+            headers: {
+              'X-API-KEY':
+                (process.env.NEXT_PUBLIC_API_KEY_TALENT_PROTOCOL as string) ??
+                ''
+            }
+          }
+        )
+        const data = await response.json()
+        console.log({ data })
         setTalentProtocol(data)
-        setRedes({...redes, talentProtocol: true})
+        setRedes({ ...redes, talentProtocol: true })
 
         //Validacion necesaria
       } catch (error) {
-        console.error('Error al llamar a la API de Talent Protocol:', error);
+        console.error('Error al llamar a la API de Talent Protocol:', error)
       }
     } else {
     }
@@ -124,24 +136,34 @@ export function ConnectYourData ({
    */
   const loginTalentProtocol = async () => {
     const id = '0xA081e1dA16133bB4Ebc7Aab1A9B0588A48D15138' //Test ID
-    const url = await getUrlTalentProtocol(id);
+    const url = await getUrlTalentProtocol(id)
   }
 
   const getUrlAutoPen = () => {
     try {
-      void CreateSignatureAutoPen('Saymon', 'Porras', 12345678, '0x5e2c00ed208912df89BD65B407A0b57e899850b1');
+      void CreateSignatureAutoPen(
+        'Saymon',
+        'Porras',
+        12345678,
+        '0x5e2c00ed208912df89BD65B407A0b57e899850b1'
+      )
     } catch (error) {
-      console.error('Error creating signature:', error);
+      console.error('Error creating signature:', error)
     }
-  };
+  }
 
   /**
    * @function CreateSignatureAutoPen
    * @description Redirecciona al usuario a la creación de firma digital con AutoPen
    * @returns {void}
    */
-  const CreateSignatureAutoPen = async (name: string, lastName: string, dni: number, publicKey: string) => {
-    setLoading(true);
+  const CreateSignatureAutoPen = async (
+    name: string,
+    lastName: string,
+    dni: number,
+    publicKey: string
+  ) => {
+    setLoading(true)
     try {
       const response = await fetch('/api/providers/autopen', {
         method: 'POST',
@@ -154,43 +176,27 @@ export function ConnectYourData ({
           dni,
           publicKey
         })
-      });
-  
+      })
+
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response:', errorData);
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json()
+        console.error('Error response:', errorData)
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
-  
-      const data = await response.json();
-      console.log('Response:', data);
-      setAutopen(data);
-      setRedes({...redes, autopen: true})
+
+      const data = await response.json()
+      console.log('Response:', data)
+      setAutopen(data)
+      setRedes({ ...redes, autopen: true })
     } catch (err) {
-      console.error('Error:', err instanceof Error ? err.message : 'An unknown error occurred');
+      console.error(
+        'Error:',
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
-  useEffect(() => {
-    const getUser = async () => {
-      if (id !== undefined && id !== null && id !== '') {
-        const { user } = await fetchUserById(id)
-        if (user) {
-          setUser(user)
-          setIsLoading({
-            github: user.github_login ? true : false,
-            mercadoLibre: user.mercado_libre_nickname ? true : false,
-            talentprotocol: user.talent_protocol_login ? true : false
-          })
-        }
-      }
-    }
-
-    getUser()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+  }
 
   /**
    * @function createPassport
@@ -257,7 +263,7 @@ export function ConnectYourData ({
             )}
           </Skeleton>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.github_login && !redes.github &&  (
+            {!user?.github_login && !redes.github && (
               <SelectDataProvider
                 id='github'
                 text='Github'
@@ -268,7 +274,7 @@ export function ConnectYourData ({
             )}
           </Skeleton>
           <Skeleton isLoaded={true} className='rounded-lg w-full'>
-            {!user?.talent_protocol_login && !redes.talentProtocol &&  (
+            {!user?.talent_protocol_login && !redes.talentProtocol && (
               <SelectDataProvider
                 id='talent-protocol'
                 text='Talent Protocol'
@@ -277,9 +283,9 @@ export function ConnectYourData ({
                 isAvailable={true}
               />
             )}
-            </Skeleton>
-            <Skeleton isLoaded={true} className='rounded-lg w-full'>
-              {!user?.autopen_login && !redes.autopen &&  (
+          </Skeleton>
+          <Skeleton isLoaded={true} className='rounded-lg w-full'>
+            {!user?.autopen_login && !redes.autopen && (
               <SelectDataProvider
                 id='autopen'
                 text='AutoPen'
@@ -288,8 +294,7 @@ export function ConnectYourData ({
                 isAvailable={true}
               />
             )}
-             </Skeleton>
-
+          </Skeleton>
         </div>
 
         {user && (
