@@ -1,3 +1,7 @@
+import { type NextPageContext } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { fetchUserById } from '@/utils/fetchUserById'
 // #region IMPORTS
 
 // Types and interfaces
@@ -22,6 +26,20 @@ export function ConnectPage ({
   id: string
   user: User | null
 }): JSX.Element {
+  const router = useRouter();
+  const { login, name, avatar_url } = router.query;
+
+  useEffect(() => {
+    // Esto se ejecuta en el lado del cliente, por lo que se verá en la consola del navegador.
+    if (login || name || avatar_url) {
+      console.log('Datos del usuario desde GitHub:', {
+        login,
+        name,
+        avatar_url
+      });
+    }
+  }, [login, name, avatar_url]);
+
   return (
     <LayoutPages
       title='Conecta tu información'
@@ -35,40 +53,40 @@ export function ConnectPage ({
   )
 }
 
-export const getServerSideProps = withUserTokenSSR({
-  whenAuthed: AuthAction.RENDER,
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN
-})(async ({ user }) => {
-  const id = user?.id
-  let res
-  let redirect
-  let currentUser: User | null = null
+// export const getServerSideProps = withUserTokenSSR({
+//   whenAuthed: AuthAction.RENDER,
+//   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN
+// })(async ({ user }) => {
+//   const id = user?.id
+//   let res
+//   let redirect
+//   let currentUser: User | null = null
 
-  if (id !== null && id !== undefined) {
-    try {
-      res = await get({ refDoc: docs(id).users })
-      currentUser = res.data
-    } catch {
-      redirect = {
-        destination: '/login',
-        permanent: false
-      }
-    }
-  } else {
-    redirect = {
-      destination: '/login',
-      permanent: false
-    }
-  }
+//   if (id !== null && id !== undefined) {
+//     try {
+//       res = await get({ refDoc: docs(id).users })
+//       currentUser = res.data
+//     } catch {
+//       redirect = {
+//         destination: '/login',
+//         permanent: false
+//       }
+//     }
+//   } else {
+//     redirect = {
+//       destination: '/login',
+//       permanent: false
+//     }
+//   }
 
-  return {
-    props: {
-      user: currentUser,
-      id
-    },
-    redirect
-  }
-})
+//   return {
+//     props: {
+//       user: currentUser,
+//       id
+//     },
+//     redirect
+//   }
+// })
 
 // #region EXPORTS
 export default withUser<{

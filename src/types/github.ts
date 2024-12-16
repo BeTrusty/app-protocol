@@ -1,4 +1,5 @@
 export interface Github {
+    userId: string;
     reputation_level?: string,
     github_login: string;
     github_public_repos: number | string;

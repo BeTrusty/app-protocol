@@ -1,4 +1,4 @@
-import { Admin } from '@/firebase/admin'
+import  admin  from 'firebase-admin'
 import { type ZkSyncProof } from '@/types/zksync'
 import { verifyZkSyncUser } from '@/utils/verifyZkSyncUser'
 
@@ -21,7 +21,7 @@ export async function getCustomTokenFromZkSyncProof (
     zkSyncId: zkSyncUser.userId
   }
 
-  const customToken = await Admin.auth().createCustomToken(
+  const customToken = await admin.auth().createCustomToken(
     zkSyncUser.userId,
     additionalClaims
   )
