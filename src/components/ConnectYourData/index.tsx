@@ -1,12 +1,7 @@
-import {
-  CredentialData,
-  type CredentialSubject,
-  type ResponseVCData
-} from '@/types/credentials'
-import { useEffect, useState } from 'react'
+import { CredentialData, type ResponseVCData } from '@/types/credentials'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Separator } from '@components/Separator'
-import { fetchUserById } from '@/utils/fetchUserById'
 import { Title } from '@components/Title'
 import { SelectDataProvider } from '@components/SelectDataProvider'
 import { LogoAirbnb } from '@/components/Icons/IconAirbnb'
@@ -21,6 +16,7 @@ import { LogoAutoPen } from '@/components/Icons/IconAutoPen'
 import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useConnectInformation } from '@/hooks/useConnectInformation'
+import { createTalentProtocol } from '@/firebase/talentProtocol/create'
 
 import { signIn } from 'next-auth/react';
 
@@ -117,7 +113,10 @@ export function ConnectYourData ({
           }
         )
         const data = await response.json()
-        console.log({ data })
+        if (data !== null && data !== undefined) {
+          console.log('Passport:', data)
+          await createTalentProtocol({ ...data, userId: localId })
+        }
         setTalentProtocol(data)
         setRedes({ ...redes, talentProtocol: true })
 
