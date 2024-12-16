@@ -1,4 +1,5 @@
 // pages/api/providers/github/callback.ts
+import { uploadGitHub } from '@/firebase/github/create'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || ""
@@ -50,6 +51,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const githubUser = await userResponse.json()
+
+    await uploadGitHub({userId: state, ...githubUser})
 
     const queryParams = new URLSearchParams({
         login: githubUser.login || '',
