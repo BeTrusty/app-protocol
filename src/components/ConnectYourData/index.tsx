@@ -17,6 +17,7 @@ import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useConnectInformation } from '@/hooks/useConnectInformation'
 import { createTalentProtocol } from '@/firebase/talentProtocol/create'
+import { v4 as uuidv4 } from 'uuid'
 
 import { signIn } from 'next-auth/react';
 
@@ -77,7 +78,7 @@ export function ConnectYourData ({
    * @returns {void}
    */
   const loginGithub = () => {
-    router.push(`/api/providers/github/login?id="${1234}"`);
+    router.push(`/api/providers/github/login?id="${uuidv4()}"`);
   }
 
   const getUrlMercadoLibre = () => {
