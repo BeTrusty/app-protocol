@@ -17,6 +17,7 @@ import { Button, Skeleton } from '@nextui-org/react'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useConnectInformation } from '@/hooks/useConnectInformation'
 import { createTalentProtocol } from '@/firebase/talentProtocol/create'
+import { createAutopen } from '@/firebase/autoPen/create'
 
 export function ConnectYourData ({
   email,
@@ -77,6 +78,9 @@ export function ConnectYourData ({
   const loginGithub = () => {
     router.push(getUrlGithub())
   }
+
+
+  
 
   const getUrlMercadoLibre = () => {
     if (email !== '') {
@@ -183,6 +187,10 @@ export function ConnectYourData ({
 
       const data = await response.json()
       console.log('Response:', data)
+      if (data !== null && data !== undefined) {
+        console.log('Passport:', data)
+        await createAutopen({ ...data, userId: localId })
+      }
       setAutopen(data)
       setRedes({ ...redes, autopen: true })
     } catch (err) {
